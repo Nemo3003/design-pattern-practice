@@ -17,7 +17,6 @@ model User {
   age               Int
   email             String?       @unique
   role              Role          @default(BASIC)
-  blob              Bytes
   writtenPosts      Post[]        @relation("WrittenPosts")
   favoritePosts     Post[] @relation("FavoritePosts")
   UserPreference    UserPreference?
@@ -62,3 +61,4 @@ enum Role{
 //TO format: npx prisma format
 // To run this: npx prisma init --datasource-provider mysql
 // To migrate it to a db: npx prisma migrate dev --name init
+// npm run devStart

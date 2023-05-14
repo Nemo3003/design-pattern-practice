@@ -6,7 +6,14 @@ async function main(){
     console.log(user)
     const users = await prisma.user.findMany();
     console.log(users)*/
-     await prisma.user.deleteMany();
+     const user = await prisma.user.create({
+        data: {
+            name: "ulisesf",
+            email: "uli@sjksjgg.com",
+            age: 23,
+        },
+    })
+        console.log(user)
 }
 
 main()
@@ -14,5 +21,5 @@ main()
         console.error(err.message);
     })
     .finally(async () => {
-        await prisma.$disconnect
+        await prisma.$disconnect()
     })

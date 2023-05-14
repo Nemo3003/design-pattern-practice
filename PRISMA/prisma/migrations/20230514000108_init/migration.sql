@@ -1,21 +1,17 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `User` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `age` INTEGER NOT NULL,
+    `email` VARCHAR(191) NULL,
+    `role` ENUM('BASIC', 'EDITOR', 'ADMIN') NOT NULL DEFAULT 'BASIC',
+    `blob` LONGBLOB NULL,
 
-  - The primary key for the `user` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - A unique constraint covering the columns `[email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[age,name]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `age` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `blob` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE `user` DROP PRIMARY KEY,
-    ADD COLUMN `age` INTEGER NOT NULL,
-    ADD COLUMN `blob` LONGBLOB NOT NULL,
-    ADD COLUMN `email` VARCHAR(191) NULL,
-    ADD COLUMN `role` ENUM('BASIC', 'EDITOR', 'ADMIN') NOT NULL DEFAULT 'BASIC',
-    MODIFY `id` VARCHAR(191) NOT NULL,
-    ADD PRIMARY KEY (`id`);
+    UNIQUE INDEX `User_email_key`(`email`),
+    INDEX `User_email_idx`(`email`),
+    UNIQUE INDEX `User_age_name_key`(`age`, `name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `UserPreference` (
@@ -57,15 +53,6 @@ CREATE TABLE `_CategoryToPost` (
     UNIQUE INDEX `_CategoryToPost_AB_unique`(`A`, `B`),
     INDEX `_CategoryToPost_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_email_key` ON `User`(`email`);
-
--- CreateIndex
-CREATE INDEX `User_email_idx` ON `User`(`email`);
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_age_name_key` ON `User`(`age`, `name`);
 
 -- AddForeignKey
 ALTER TABLE `UserPreference` ADD CONSTRAINT `UserPreference_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
